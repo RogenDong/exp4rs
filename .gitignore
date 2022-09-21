@@ -1,0 +1,8 @@
+!/src
+!/Cargo.toml
+
+# idea
+.idea/
+
+/target
+/Cargo.lock
