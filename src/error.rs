@@ -10,9 +10,9 @@ pub struct ParseError {
 }
 
 impl ParseError {
-    pub fn new(msg: &str) -> Self {
+    pub fn new(message: String) -> Self {
         ParseError {
-            message: msg.to_string()
+            message
         }
     }
 }
