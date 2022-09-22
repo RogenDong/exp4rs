@@ -1,5 +1,5 @@
 use log::{debug, info, trace};
-use syn::{BinOp, Expr, ExprBinary, ExprLit, ExprUnary, Lit};
+use syn::{BinOp, Expr, ExprBinary, ExprLit, ExprUnary, Lit, UnOp};
 
 use crate::error::ParseError;
 
@@ -54,7 +54,13 @@ fn parse_bin(binary: &ExprBinary) -> Option<f64> {
 /// 一元表达式解析
 fn parse_una(unary: &ExprUnary) -> Option<f64> {
     trace!("一元表达式分解");
-    None
+    match &unary.op {
+        UnOp::Neg(_) => {
+            let v = parse_exp(&unary.expr)?;
+            Some(-v)
+        },
+        _ => None,
+    }
 }
 
 /// 递归解析表达式树
@@ -103,6 +109,7 @@ mod tests {
     fn ts_1() {
         let aa = [
             "(  ((  13-10  ))  ) << (  7-4  )",
+            "(  -13+10  ) << (  7-4  )",
             "{  [(  13-10  )]  }",
             "{  [(",
         ];
